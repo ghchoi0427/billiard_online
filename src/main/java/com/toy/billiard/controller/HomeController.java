@@ -8,10 +8,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/home")
 public class HomeController {
 
-    @GetMapping("/home")
+    @GetMapping("")
     public String home(HttpServletRequest request) {
         Cookie[] list = request.getCookies();
         for (Cookie cookie : list) {
