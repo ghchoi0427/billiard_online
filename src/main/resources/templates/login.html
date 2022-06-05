@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/style.css"/>
+    <title>Login</title>
+</head>
+<body>
+<div class="container">
+    <div id="loginFormContainer">
+        <form method="post" th:object="${loginDto}">
+            <div><input type="text" class="form-control" id="username" th:field="*{username}" placeholder="아이디"></div>
+            <div>
+                <button class="btn btn-primary">시작</button>
+            </div>
+            <div><p><a th:href="@{/login/signup}"><u>아직 회원이 아니신가요? 회원가입 하기</u></a></p></div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
