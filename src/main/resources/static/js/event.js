@@ -19,7 +19,7 @@ function findOffset(obj) {
         do {
             curX += obj.offsetLeft;
             curY += obj.offsetTop;
-        } while (obj = obj.offsetParent);
+        } while (obj === obj.offsetParent);
         return {x: curX, y: curY};
     }
 }
@@ -47,7 +47,7 @@ function updateCanvas(e) {
 }
 
 function startDrag() {
-    if (cue.mouse == true) {
+    if (cue.mouse === true) {
         cue.drag = true;
         distX = mouseX - cue.x;
         distY = mouseY - cue.y;
@@ -58,7 +58,7 @@ function startDrag() {
 
 function stopDrag() {
     one = 0.1;
-    if (cue.drag == true) {
+    if (cue.drag === true) {
         cue.drag = false;
     }
 }
@@ -105,7 +105,7 @@ function cue_motion() {
         cue.x = tempX - 20 * Math.cos(degreeToRadian * cue.degree);
         cue.y = tempY - 20 * Math.sin(degreeToRadian * cue.degree);
         draw_cue();
-        sound_hit.play();
+        //sound_hit.play();
         i = 0;
         // setTimeout(function () {
         cue.visible = false;
@@ -198,19 +198,20 @@ function draw_guide_1() {
 function playerChange() {
     p1 = document.getElementById("p1");
     p2 = document.getElementById("p2");
+    myScore = document.getElementById("myScore");
+    enemyScore = document.getElementById("enemyScore");
     nowPlayer++;
     nowPlayer = nowPlayer % 2;
 
-    if (nowPlayer == 0) {
+    if (nowPlayer === 0) {
         p2.style.color = "lightgrey";
         p1.style.color = "dodgerblue";
-    }
-    else {
+    } else {
         p2.style.color = "dodgerblue";
         p1.style.color = "lightgrey";
     }
-    p1.innerHTML = "Player1 : " + scoreinfo[0];
-    p2.innerHTML = "Player2 : " + scoreinfo[1];
+    myScore.innerHTML = String(scoreinfo[0]);
+    enemyScore.innerHTML = String(scoreinfo[1]);
 
     draw();
 }
@@ -223,36 +224,24 @@ function keyEvent1(e) {
     if (waitkey) {
         if (e.keyCode === 38) { //up arrow
             cue.degree--;
-        }
-        else if (e.keyCode === 40) { //down arrow
+        } else if (e.keyCode === 40) { //down arrow
             cue.degree++;
-        }
-
-        else if (e.keyCode === 37) { //left arrow
+        } else if (e.keyCode === 37) { //left arrow
             cue.degree -= 3;
-        }
-
-
-        else if (e.keyCode === 39) { //right arrow
+        } else if (e.keyCode === 39) { //right arrow
             cue.degree += 3;
-        }
-
-
-        else if (e.keyCode === 67) { //c
-            if (nowPlayer == 0) {
+        } else if (e.keyCode === 67) { //c
+            if (nowPlayer === 0) {
                 p2.style.color = "lightgrey";
                 p1.style.color = "dodgerblue";
-            }
-            else {
+            } else {
                 p2.style.color = "dodgerblue";
                 p1.style.color = "lightgrey";
             }
-            p1.innerHTML = "Player1 : " + scoreinfo[0];
-            p2.innerHTML = "Player2 : " + scoreinfo[1];
+            myScore.innerHTML = String(scoreinfo[0]);
+            enemyScore.innerHTML = String(scoreinfo[1]);
             playerChange();
-        }
-
-        else if (e.keyCode === 32 && waite) { //w
+        } else if (e.keyCode === 32 && waite) { //w
             startGauge();
             waite = false;
         }
@@ -276,22 +265,17 @@ function getscore() {
         if (balls[nowPlayer].red1 && balls[nowPlayer].red2) {
             scoreinfo[nowPlayer]++; //득점
             text = "Nice Shoot!";
-        }
-
-        else if (balls[nowPlayer].red1 || balls[nowPlayer].red2) {
+        } else if (balls[nowPlayer].red1 || balls[nowPlayer].red2) {
             //무실점 무득점
             text = "Let's do better!";
             turnover = true;
-        }
-
-        else {
+        } else {
             text = "Oh My God !!"; //실점
             if (scoreinfo[nowPlayer] > 0)
                 scoreinfo[nowPlayer]--;
             turnover = true;
         }
-    }
-    else {
+    } else {
         text = "Oh My God !!"; //실점
         if (scoreinfo[nowPlayer] > 0)
             scoreinfo[nowPlayer]--;
@@ -311,16 +295,15 @@ function getscore() {
     p1 = document.getElementById("p1");
     p2 = document.getElementById("p2");
 
-    if (nowPlayer == 0) {
+    if (nowPlayer === 0) {
         p2.style.color = "lightgrey";
         p1.style.color = "dodgerblue";
-    }
-    else {
+    } else {
         p2.style.color = "dodgerblue";
         p1.style.color = "lightgrey";
     }
-    p1.innerHTML = "Player1 : " + scoreinfo[0];
-    p2.innerHTML = "Player2 : " + scoreinfo[1];
+    myScore.innerHTML = String(scoreinfo[0]);
+    enemyScore.innerHTML = String(scoreinfo[1]);
 
 
     ctx.clearRect(0, 0, w, h);
@@ -336,13 +319,12 @@ function getscore() {
 
 function help_alert() {
     swal(
-
         "How to Play",
-        "Mouse Control\n"+
+        "Mouse Control\n" +
         "1. You can adjust the angle by dragging and dropping the cue\n" +
         "2. You can adjust the force by pressing the mouse on the hit button\n\n" +
 
-        "Key Control\n"+
+        "Key Control\n" +
         "1. Left or Right arrow (←, →) : Detailed angle adjustment\n" +
         "2. Up or Down arrow (↑, ↓) : Large angle adjustment\n" +
         "3. Space Bar : same as pressing the hit button\n" +
