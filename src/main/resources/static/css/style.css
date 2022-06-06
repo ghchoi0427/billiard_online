@@ -1,0 +1,66 @@
+#canv{
+    height: 30px;
+}
+
+#player_change {
+    float: left;
+    height: 30px;
+    margin-right: 5px;
+    margin-bottom: 10px;
+}
+
+#hit_button {
+    float: left;
+    height: 30px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+
+#myProgress {
+    float: left;
+    position: relative;
+    width: 400px;
+    height: 30px;
+    background-color: #ddd;
+    margin-bottom: 10px;
+}
+
+#myBar {
+    position: absolute;
+    width: 0%;
+    height: 100%;
+    background-color: #4CAF50;
+    margin-bottom: 10px;
+}
+
+#label {
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+span {
+    float: left;
+    color: lightgrey;
+    line-height: 30px;
+    font-size: 35px;
+    font-weight: bold;
+    margin-left: 50px;
+}
+
+#help_button {
+    float: left;
+    height: 30px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+
+#p2 {
+    margin-right: 50px;
+}
+
+#help_button {
+    margin-right: 10px;
+    width :40pt;
+}
