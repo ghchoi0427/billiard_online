@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Billiard Online</title>
 </head>
 <body>
-
+<div>
+    <a th:href="@{/createRoom}">
+        <button class="btn btn-lg btn-secondary">방 만들기</button>
+    </a>
+    <div class="tableContainer">
+        <table class="tb_col">
+            <tr>
+                <th>name</th>
+                <th>pax</th>
+            </tr>
+            <tr th:each="room : ${rooms}">
+                <td><a th:text="${room.getName()}" th:href="@{'/room/'+*{room.getId()}}"></a></td>
+                <td th:text="*{room.getJoined()}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
 </body>
 </html>
