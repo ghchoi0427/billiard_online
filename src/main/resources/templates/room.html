@@ -9,8 +9,10 @@
 
 <div id="container">
 
-    <span id="p1" style="color:dodgerblue; margin-left: 0;">Player1 : 0</span> <span style="color:red">vs</span> <span
-        id="p2">Player2 : 0</span>
+    <span id="p1" style="color:dodgerblue; margin-left: 0;" th:text="${username}"></span><span>: </span><span
+        id="myScore">0</span>
+    <span style="color:red">vs</span>
+    <span id="p2">Player2</span><span>: </span><span id="enemyScore">0</span>
 
     <button id="help_button">HELP</button>
     <button id="player_change">Player Change</button>
@@ -24,15 +26,98 @@
         <canvas>
         </canvas>
     </div>
-
-    <audio style="position: absolute; right:0; bottom: 0;" src="../sounds/bgm.mp3" autoplay controls></audio>
-
-    <script src="example.js"></script>
-    <script src="event.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    <script type="text/javascript" th:src="@{/js/example.js}"></script>
-    <script type="text/javascript" th:src="@{/js/event.js}"></script>
-
 </div>
+<!--    <audio style="position: absolute; right:0; bottom: 0;" src="../sounds/bgm.mp3" autoplay controls></audio>-->
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript" th:src="@{/js/billiard.js}"></script>
+<script type="text/javascript" th:src="@{/js/event.js}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.4/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script th:inline="javascript">
+
+    var stompClient = null;
+    var username = null;
+    const myName = document.getElementById("p1");
+    const enemyName = document.getElementById("p2");
+
+    window.addEventListener('load', function () {
+        connect();
+    });
+
+    function getCookie(cookieName) {
+        var cookieValue = null;
+        if (document.cookie) {
+            var array = document.cookie.split((escape(cookieName) + '='));
+            if (array.length >= 2) {
+                var arraySub = array[1].split(';');
+                cookieValue = unescape(arraySub[0]);
+            }
+        }
+        return cookieValue;
+    }
+
+    function connect(event) {
+        username = getCookie("username")
+        if (username) {
+            myName.innerHTML = username;
+            var socket = new SockJS('/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, onConnected, onError);
+        }
+        event.preventDefault();
+    }
+
+    function onConnected() {
+        stompClient.subscribe('/topic/public', onMessageReceived);
+        stompClient.send("/app/chat.addUser", {}, JSON.stringify({sender: username, type: 'JOIN'}));
+    }
+
+    function onError() {
+        alert("error");
+    }
+
+    function sendMessage() {
+
+
+        if (stompClient) {
+            var chatMessage = {
+                sender: username,
+                content: "content",
+                type: 'CHAT'
+            };
+
+            stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        }
+    }
+
+    function sendPresent() {
+        if (stompClient) {
+            var chatMessage = {
+                sender: username,
+                type: 'PRESENT'
+            };
+            stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        }
+    }
+
+    function onMessageReceived(payload) {
+
+        var message = JSON.parse(payload.body);
+        if (message.type === 'JOIN' && message.sender !== username) {
+            enemyName.innerHTML = message.sender;
+            sendPresent();
+        } else if (message.type === 'LEAVE') {
+            alert(enemyName.innerHTML + " left the game.");
+        } else if (message.sender !== username && message.type === 'PRESENT') {
+            enemyName.innerHTML = message.sender;
+        }
+        else if(message.sender !== username && message.type === 'SHOT'){
+           // HitBall(message.content.dx, message.content.dy);
+        }
+    }
+
+</script>
+
 </body>
 </html>
