@@ -12,6 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
+    @GetMapping("/")
+    public String landing() {
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("loginDto", new LoginDto());
@@ -22,7 +27,6 @@ public class LoginController {
     public String login(LoginDto dto, HttpServletResponse response) {
         Cookie cookie = new Cookie("username", dto.getUsername());
         cookie.setDomain("localhost");
-        cookie.setPath("/home");
         cookie.setMaxAge(30 * 60);
         cookie.setSecure(true);
         response.addCookie(cookie);
