@@ -5,10 +5,9 @@ import com.toy.billiard.dto.RoomDto;
 import com.toy.billiard.service.RoomService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.UUID;
 
 @Controller
 public class RoomController {
@@ -20,7 +19,8 @@ public class RoomController {
     }
 
     @GetMapping("/room/{id}")
-    public String room() {
+    public String room(@CookieValue(name = "memberId", required = false) String username, Model model) {
+        model.addAttribute("username", username);
         return "room";
     }
 
@@ -36,7 +36,7 @@ public class RoomController {
         room.setName(dto.getName());
         room.setJoined(1);
         roomService.save(room);
-        return "redirect:/home";
+        return "redirect:/room/" + room.getId();
     }
 
 }
