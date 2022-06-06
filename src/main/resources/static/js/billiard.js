@@ -32,8 +32,8 @@ var canvas = document.querySelector('canvas'),
 canvas.width = w;
 canvas.height = h;
 var power = 0;
-xlocations = [180, 20, 200, 240],
-    ylocations = [400, 275, 200, 240];
+xlocations = [810, 200, 810, 270];
+ylocations = [190, 275, 275, 275];
 nowPlayer = 0;
 shootend = false;
 var scoreinfo = [0, 0];
@@ -284,8 +284,7 @@ Ball.prototype.Update = function (table) {
         this.yVelocity = -this.yVelocity;
         this.yAccel = -this.yAccel;
         bounce = true;
-    }
-    else if (this.y <= this.r) // Ball at top edge
+    } else if (this.y <= this.r) // Ball at top edge
     {
         this.y = this.r;
         this.yVelocity = -this.yVelocity;
@@ -302,8 +301,7 @@ Ball.prototype.Update = function (table) {
         this.xVelocity = -this.xVelocity;
         this.xAccel = -this.xAccel;
         bounce = true;
-    }
-    else if (this.x <= this.r) // Ball at left edge
+    } else if (this.x <= this.r) // Ball at left edge
     {
         this.x = this.r;
         this.xVelocity = -this.xVelocity;
@@ -450,9 +448,7 @@ function draw() {
             getscore();
             shootend = false;
         }
-    }
-
-    else {// 공이 움직일때
+    } else {// 공이 움직일때
         hit.disabled = true;
         player.disabled = true;
     }
