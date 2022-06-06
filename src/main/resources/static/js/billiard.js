@@ -333,7 +333,7 @@ function CollideBalls(ball, ball2) {
     // 충돌 감지
 
     var lossball;
-    sound_collision.play();
+    //sound_collision.play();
 
     lossball = (nowPlayer + 1) % 2;
 
