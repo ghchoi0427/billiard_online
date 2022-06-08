@@ -1,13 +1,13 @@
-var help = document.getElementById("help_button");
-var hit = document.getElementById("hit_button");
-var player = document.getElementById("player_change");
-var elem = document.getElementById("myBar");
-var mouseX = 9999, mouseY = 9999, distX, distY;
-var nowdegree = 0;
-var cursor_grab = "url(DATA URI), move";
-var cursor_drag = "url(DATA URI), move";
-var degreeToRadian = Math.PI / 180;
-var canvas = document.querySelector('canvas'),
+let help = document.getElementById("help_button");
+let hit = document.getElementById("hit_button");
+let player = document.getElementById("player_change");
+let elem = document.getElementById("myBar");
+let mouseX = 9999, mouseY = 9999, distX, distY;
+let nowdegree = 0;
+let cursor_grab = "url(DATA URI), move";
+let cursor_drag = "url(DATA URI), move";
+let degreeToRadian = Math.PI / 180;
+let canvas = document.querySelector('canvas'),
     ctx = canvas.getContext('2d'),
     w = window.innerWidth,
     h = window.innerHeight,
@@ -31,12 +31,12 @@ var canvas = document.querySelector('canvas'),
     tableFriction = 0.00003;
 canvas.width = w;
 canvas.height = h;
-var power = 0;
+let power = 0;
 xlocations = [810, 200, 810, 270];
 ylocations = [190, 275, 275, 275];
 nowPlayer = 0;
 shootend = false;
-var scoreinfo = [0, 0];
+let scoreinfo = [0, 0];
 
 
 window.requestAnimFrame = (function () {
@@ -64,7 +64,7 @@ window.onload = function () {
     draw();
 };
 
-var Cue = function (ball) {
+let Cue = function (ball) {
     this.x = ball.x + 60;
     this.y = ball.y + 60;
     this.degree = 0;
@@ -78,22 +78,22 @@ function draw_cue() {
     if (cue.visible) {
         ctx.clearRect(0, 0, w, h);
         table.draw();
-        for (var i = 0; i < points; i++) {
-            var temp = balls[i];
+        for (let i = 0; i < points; i++) {
+            let temp = balls[i];
             temp.TestImpact();
             temp.Update(table);
             temp.draw(table);
         }
 
-        var degree = cue.degree * degreeToRadian;
-        var x1_start = cue.x + 40 * Math.cos(degree + degreeToRadian * 5);
-        var x2_start = cue.x + 40 * Math.cos(degree - degreeToRadian * 5);
-        var x3_start = cue.x + 50 * Math.cos(degree + degreeToRadian * 5);
-        var x4_start = cue.x + 50 * Math.cos(degree - degreeToRadian * 5);
-        var y1_start = cue.y + 40 * Math.sin(degree + degreeToRadian * 5);
-        var y2_start = cue.y + 40 * Math.sin(degree - degreeToRadian * 5);
-        var y3_start = cue.y + 50 * Math.sin(degree + degreeToRadian * 5);
-        var y4_start = cue.y + 50 * Math.sin(degree - degreeToRadian * 5);
+        let degree = cue.degree * degreeToRadian;
+        let x1_start = cue.x + 40 * Math.cos(degree + degreeToRadian * 5);
+        let x2_start = cue.x + 40 * Math.cos(degree - degreeToRadian * 5);
+        let x3_start = cue.x + 50 * Math.cos(degree + degreeToRadian * 5);
+        let x4_start = cue.x + 50 * Math.cos(degree - degreeToRadian * 5);
+        let y1_start = cue.y + 40 * Math.sin(degree + degreeToRadian * 5);
+        let y2_start = cue.y + 40 * Math.sin(degree - degreeToRadian * 5);
+        let y3_start = cue.y + 50 * Math.sin(degree + degreeToRadian * 5);
+        let y4_start = cue.y + 50 * Math.sin(degree - degreeToRadian * 5);
 
 
         ctx.beginPath();
@@ -104,10 +104,10 @@ function draw_cue() {
         ctx.fillStyle = "#f8f6ea";
         ctx.fill();
 
-        var x1_end = cue.x + 700 * Math.cos(degree + degreeToRadian * 0.6);
-        var x2_end = cue.x + 700 * Math.cos(degree - degreeToRadian * 0.6);
-        var y1_end = cue.y + 700 * Math.sin(degree + degreeToRadian * 0.6);
-        var y2_end = cue.y + 700 * Math.sin(degree - degreeToRadian * 0.6);
+        let x1_end = cue.x + 700 * Math.cos(degree + degreeToRadian * 0.6);
+        let x2_end = cue.x + 700 * Math.cos(degree - degreeToRadian * 0.6);
+        let y1_end = cue.y + 700 * Math.sin(degree + degreeToRadian * 0.6);
+        let y2_end = cue.y + 700 * Math.sin(degree - degreeToRadian * 0.6);
 
 
         ctx.fillStyle = "#f6dfbd";
@@ -124,17 +124,17 @@ function draw_cue() {
         ctx.isPointInPath(mouseX, mouseY) ? cue.mouse = true : cue.mouse = false;  //현재 경로에 포함되있는지 확인
         ctx.fill();
 
-        var x1_middle = cue.x + 520 * Math.cos(degree + degreeToRadian * 0.6);
-        var x2_middle = cue.x + 520 * Math.cos(degree - degreeToRadian * 0.6);
-        var x3_middle = cue.x + 450 * Math.cos(degree);
-        var x4_middle = cue.x + 680 * Math.cos(degree + degreeToRadian * 0.6);
-        var x5_middle = cue.x + 680 * Math.cos(degree - degreeToRadian * 0.6);
+        let x1_middle = cue.x + 520 * Math.cos(degree + degreeToRadian * 0.6);
+        let x2_middle = cue.x + 520 * Math.cos(degree - degreeToRadian * 0.6);
+        let x3_middle = cue.x + 450 * Math.cos(degree);
+        let x4_middle = cue.x + 680 * Math.cos(degree + degreeToRadian * 0.6);
+        let x5_middle = cue.x + 680 * Math.cos(degree - degreeToRadian * 0.6);
 
-        var y1_middle = cue.y + 520 * Math.sin(degree + degreeToRadian * 0.6);
-        var y2_middle = cue.y + 520 * Math.sin(degree - degreeToRadian * 0.6);
-        var y3_middle = cue.y + 450 * Math.sin(degree);
-        var y4_middle = cue.y + 680 * Math.sin(degree + degreeToRadian * 0.6);
-        var y5_middle = cue.y + 680 * Math.sin(degree - degreeToRadian * 0.6);
+        let y1_middle = cue.y + 520 * Math.sin(degree + degreeToRadian * 0.6);
+        let y2_middle = cue.y + 520 * Math.sin(degree - degreeToRadian * 0.6);
+        let y3_middle = cue.y + 450 * Math.sin(degree);
+        let y4_middle = cue.y + 680 * Math.sin(degree + degreeToRadian * 0.6);
+        let y5_middle = cue.y + 680 * Math.sin(degree - degreeToRadian * 0.6);
 
         ctx.fillStyle = "#1a1a18";
 
@@ -154,7 +154,7 @@ function draw_cue() {
 }
 
 
-var Table = function () {
+let Table = function () {
     this.xPos = 60;
     this.yPos = 60;
     this.width = 1080;
@@ -163,8 +163,8 @@ var Table = function () {
 
 
 Table.prototype.draw = function () {
-    var tw = this.width + 120;
-    var th = this.height + 120;
+    let tw = this.width + 120;
+    let th = this.height + 120;
 
     ctx.setLineDash([]);
     ctx.fillStyle = "#6a5746";
@@ -200,7 +200,7 @@ Table.prototype.draw = function () {
 
     ctx.fillStyle = "#b0b0b0";
 
-    for (var i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 7; i++) {
         ctx.beginPath();
 //arc(중심점x, 중심점y, 반지름, 시작각도, 끝각도, 방향)
 //true : 반시계 방향 , false : 시계 방향
@@ -216,7 +216,7 @@ Table.prototype.draw = function () {
         ctx.closePath();
     }
 
-    for (var i = 1; i <= 3; i++) {
+    for (let i = 1; i <= 3; i++) {
         ctx.beginPath();
         ctx.arc(30, 60 + (th - 120) / 4 * i, 5, 0, Math.PI * 2, true);
         ctx.strokeStyle = "#0";
@@ -232,7 +232,7 @@ Table.prototype.draw = function () {
 }
 
 
-var Ball = function (i) {
+let Ball = function (i) {
     this.r = 20;
     this.x = xlocations[i % points];
     this.y = ylocations[i % points];
@@ -269,7 +269,7 @@ Ball.prototype.draw = function (table) {
 };
 
 Ball.prototype.Update = function (table) {
-    var dT = 1000 / refreshHz;
+    let dT = 1000 / refreshHz;
     this.xAccel = this.xVelocity * -this.tableFriction * dT;
     this.yAccel = this.yVelocity * -this.tableFriction * dT;
     this.yVelocity += this.yAccel * dT;
@@ -277,7 +277,7 @@ Ball.prototype.Update = function (table) {
     this.y += this.yVelocity * dT;
     this.x += this.xVelocity * dT;
 
-    var bounce = false;
+    let bounce = false;
     if (this.y >= table.height - this.r) // Ball at bottom edge
     {
         this.y = table.height - this.r;
@@ -332,27 +332,27 @@ Ball.prototype.Strike = function (xImpact, yImpact) {
 function CollideBalls(ball, ball2) {
     // 충돌 감지
 
-    var lossball;
+    let lossball;
     //sound_collision.play();
 
     lossball = (nowPlayer + 1) % 2;
 
-    if (ball == balls[nowPlayer]) {
-        if (ball2 == balls[lossball])
+    if (ball === balls[nowPlayer]) {
+        if (ball2 === balls[lossball])
             balls[nowPlayer].loss = true;
-        if (ball2 == balls[2])
+        if (ball2 === balls[2])
             balls[nowPlayer].red1 = true;
-        if (ball2 == balls[3])
+        if (ball2 === balls[3])
             balls[nowPlayer].red2 = true;
     }
 
-    var Del = ball2.r + ball.r;
-    var dX = ball2.x - ball.x;
-    var dY = ball2.y - ball.y;
-    var dVX = ball2.xVelocity - ball.xVelocity;
-    var dVY = ball2.yVelocity - ball.yVelocity;
-    var dSq = dX * dX + dY * dY;
-    var alpha = (1 + elasticity) / 2 * (dX * dVX + dY * dVY) / dSq;
+    let Del = ball2.r + ball.r;
+    let dX = ball2.x - ball.x;
+    let dY = ball2.y - ball.y;
+    let dVX = ball2.xVelocity - ball.xVelocity;
+    let dVY = ball2.yVelocity - ball.yVelocity;
+    let dSq = dX * dX + dY * dY;
+    let alpha = (1 + elasticity) / 2 * (dX * dVX + dY * dVY) / dSq;
 
 
     ball.xVelocity += dX * alpha;
@@ -360,7 +360,7 @@ function CollideBalls(ball, ball2) {
     ball2.xVelocity -= dX * alpha;
     ball2.yVelocity -= dY * alpha;
 
-    var DDist = ((Del + 1) / Math.sqrt(dSq) - 1) / 2;
+    let DDist = ((Del + 1) / Math.sqrt(dSq) - 1) / 2;
     ball.x -= dX * DDist;
     ball.y -= dY * DDist;
     ball2.x += dX * DDist;
@@ -369,8 +369,8 @@ function CollideBalls(ball, ball2) {
 }
 
 Ball.prototype.TestImpact = function () {
-    for (var i = this.index + 1; i < points; i++) {
-        var ball = balls[i];
+    for (let i = this.index + 1; i < points; i++) {
+        let ball = balls[i];
         if (Dist(this.x, this.y, ball.x, ball.y) > this.r + ball.r) {
             continue;
         }
@@ -382,31 +382,31 @@ Ball.prototype.TestImpact = function () {
 function HitBall() {
     d_power = power * 0.75;
 
-    var mouseDownX = cue.x - d_power * Math.cos(cue.degree * degreeToRadian);
-    var mouseDownY = cue.y - d_power * Math.sin(cue.degree * degreeToRadian);
+    let mouseDownX = cue.x - d_power * Math.cos(cue.degree * degreeToRadian);
+    let mouseDownY = cue.y - d_power * Math.sin(cue.degree * degreeToRadian);
 
-    var dX = mouseDownX - balls[nowPlayer].x - 60;
-    var dY = mouseDownY - balls[nowPlayer].y - 60;
+    let dX = mouseDownX - balls[nowPlayer].x - 60;
+    let dY = mouseDownY - balls[nowPlayer].y - 60;
     shootend = true;
     balls[nowPlayer].Strike(dX / 50.0, dY / 50.0);
 
 }
 
 function Dist(x1, y1, x2, y2) {
-    var diffX = x2 - x1;
-    var diffY = y2 - y1;
+    let diffX = x2 - x1;
+    let diffY = y2 - y1;
     return Math.sqrt((diffX * diffX) + (diffY * diffY));
 }
 
 
 (function init() {
 
-        for (var i = 0; i < points; i++) {
+        for (let i = 0; i < points; i++) {
             balls.push(new Ball(i));
         }
 
-        for (var i = this.index + 1; i < points; i++) {
-            var ball = balls[i];
+        for (let i = this.index + 1; i < points; i++) {
+            let ball = balls[i];
             if (Dist(this.x, this.y, ball.x, ball.y) > this.r + ball.r) {
                 continue;
             }
@@ -419,18 +419,18 @@ function Dist(x1, y1, x2, y2) {
 
 
 function draw() {
-    var stop = true;
+    let stop = true;
     ctx.clearRect(0, 0, w, h);
     table.draw();
-    for (var i = 0; i < points; i++) {
-        var temp = balls[i];
+    for (let i = 0; i < points; i++) {
+        let temp = balls[i];
         temp.TestImpact();
         temp.Update(table);
         temp.draw(table);
     }
 
-    for (var i = 0; i < points; i++) {
-        var temp = balls[i];
+    for (let i = 0; i < points; i++) {
+        let temp = balls[i];
         stop = stop && (temp.xVelocity == 0 && temp.yVelocity == 0)
     }
 
@@ -459,3 +459,4 @@ function draw() {
         requestAnimFrame(draw);
     }
 }
+

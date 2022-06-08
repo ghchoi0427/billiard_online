@@ -1,20 +1,20 @@
-var sound_hit = new Audio('../sounds/hit.mp3');
-var sound_collision = new Audio('../sounds/collision.mp3');
-var gauge = 0;
-var one = 0.1;
-var id;
-var power = 0;
-var tempX;
-var tempY;
-var TimerID;
-var i = 0;
-var isfirst = true;
-var guide_x;
-var guide_y;
+let sound_hit = new Audio('../sounds/hit.mp3');
+let sound_collision = new Audio('../sounds/collision.mp3');
+let gauge = 0;
+let one = 0.1;
+let id;
+let power = 0;
+let tempX;
+let tempY;
+let TimerID;
+let i = 0;
+let isfirst = true;
+let guide_x;
+let guide_y;
 
 function findOffset(obj) {
-    var curX = 0;
-    var curY = 0;
+    let curX = 0;
+    let curY = 0;
     if (obj.offsetParent) {
         do {
             curX += obj.offsetLeft;
@@ -25,7 +25,7 @@ function findOffset(obj) {
 }
 
 function updateCanvas(e) {
-    var pos = findOffset(canvas);
+    let pos = findOffset(canvas);
 
     mouseX = e.pageX - pos.x;   // 마우스의 현재 좌표
     mouseY = e.pageY - pos.y;
@@ -128,29 +128,29 @@ function cue_execute() {
 }
 
 function draw_guide_1() {
-    var gx = balls[nowPlayer].x + 60;
-    var gy = balls[nowPlayer].y + 60;
+    let gx = balls[nowPlayer].x + 60;
+    let gy = balls[nowPlayer].y + 60;
 
-    var degree = cue.degree * degreeToRadian;
+    let degree = cue.degree * degreeToRadian;
 
-    var point_x = gx - 20 * Math.cos(degree);
-    var point_y = gy - 20 * Math.sin(degree);
+    let point_x = gx - 20 * Math.cos(degree);
+    let point_y = gy - 20 * Math.sin(degree);
 
     //case left wall
-    var guide_left_x = 60;
-    var guide_left_y = gy - Math.tan(degreeToRadian * cue.degree) * (point_x - 60);
+    let guide_left_x = 60;
+    let guide_left_y = gy - Math.tan(degreeToRadian * cue.degree) * (point_x - 60);
 
     //case right wall
-    var guide_right_x = 1140;
-    var guide_right_y = gy - Math.tan(degreeToRadian * cue.degree) * (point_x - 1140);
+    let guide_right_x = 1140;
+    let guide_right_y = gy - Math.tan(degreeToRadian * cue.degree) * (point_x - 1140);
 
     //case top wall
-    var guide_top_x = gx - Math.tan(degreeToRadian * (90 - cue.degree)) * (point_y - 60);
-    var guide_top_y = 60;
+    let guide_top_x = gx - Math.tan(degreeToRadian * (90 - cue.degree)) * (point_y - 60);
+    let guide_top_y = 60;
 
     //case bottom wall
-    var guide_bottom_x = gx - Math.tan(degreeToRadian * (90 - cue.degree)) * (point_y - 610);
-    var guide_bottom_y = 610;
+    let guide_bottom_x = gx - Math.tan(degreeToRadian * (90 - cue.degree)) * (point_y - 610);
+    let guide_bottom_y = 610;
 
 
     if (isfirst) {
@@ -216,8 +216,8 @@ function playerChange() {
     draw();
 }
 
-var waitkey = true;
-var waite = true;
+let waitkey = true;
+let waite = true;
 
 function keyEvent1(e) {
     player.disabled = true;
@@ -258,8 +258,8 @@ function keyEvent2(e) {
 }
 
 function getscore() {
-    var text;
-    var turnover = false;
+    let text;
+    let turnover = false;
     if (!balls[nowPlayer].loss) //적구를 맞지 않았을때
     {
         if (balls[nowPlayer].red1 && balls[nowPlayer].red2) {
@@ -333,3 +333,4 @@ function help_alert() {
         "info"
     );
 }
+
