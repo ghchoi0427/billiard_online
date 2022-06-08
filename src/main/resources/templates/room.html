@@ -36,8 +36,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script th:inline="javascript">
 
-    var stompClient = null;
-    var username = null;
+    let stompClient = null;
+    let username = null;
     const myName = document.getElementById("p1");
     const enemyName = document.getElementById("p2");
 
@@ -46,26 +46,25 @@
     });
 
     function getCookie(cookieName) {
-        var cookieValue = null;
+        let cookieValue = null;
         if (document.cookie) {
-            var array = document.cookie.split((escape(cookieName) + '='));
+            const array = document.cookie.split((escape(cookieName) + '='));
             if (array.length >= 2) {
-                var arraySub = array[1].split(';');
+                let arraySub = array[1].split(';');
                 cookieValue = unescape(arraySub[0]);
             }
         }
         return cookieValue;
     }
 
-    function connect(event) {
+    function connect() {
         username = getCookie("username")
         if (username) {
             myName.innerHTML = username;
-            var socket = new SockJS('/ws');
+            let socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, onConnected, onError);
         }
-        event.preventDefault();
     }
 
     function onConnected() {
@@ -81,7 +80,7 @@
 
 
         if (stompClient) {
-            var chatMessage = {
+            let chatMessage = {
                 sender: username,
                 content: "content",
                 type: 'CHAT'
@@ -93,7 +92,7 @@
 
     function sendPresent() {
         if (stompClient) {
-            var chatMessage = {
+            let chatMessage = {
                 sender: username,
                 type: 'PRESENT'
             };
@@ -103,7 +102,7 @@
 
     function onMessageReceived(payload) {
 
-        var message = JSON.parse(payload.body);
+        let message = JSON.parse(payload.body);
         if (message.type === 'JOIN' && message.sender !== username) {
             enemyName.innerHTML = message.sender;
             sendPresent();
