@@ -53,7 +53,7 @@ window.onload = function () {
     canvas.addEventListener('mousedown', startDrag, false); // 버튼을 누를때
     canvas.addEventListener('mouseup', stopDrag, false);  // 버튼을 놓을때
 
-    player.addEventListener('click', playerChange, false);
+    // player.addEventListener('click', playerChange, false);
     hit.addEventListener('mousedown', startGauge, false);
     hit.addEventListener('mouseup', stopGauge, false);
     help.addEventListener('mousedown', help_alert, false);
@@ -389,7 +389,12 @@ function HitBall() {
     let dY = mouseDownY - balls[nowPlayer].y - 60;
     shootend = true;
     balls[nowPlayer].Strike(dX / 50.0, dY / 50.0);
+    sendShot(dX, dY);
+}
 
+function remoteHitBall() {
+    shootend = true;
+    balls[nowPlayer].Strike(remoteDx / 50.0, remoteDy / 50.0);
 }
 
 function Dist(x1, y1, x2, y2) {
@@ -431,7 +436,7 @@ function draw() {
 
     for (let i = 0; i < points; i++) {
         let temp = balls[i];
-        stop = stop && (temp.xVelocity == 0 && temp.yVelocity == 0)
+        stop = stop && (temp.xVelocity === 0 && temp.yVelocity === 0)
     }
 
 
@@ -459,4 +464,3 @@ function draw() {
         requestAnimFrame(draw);
     }
 }
-

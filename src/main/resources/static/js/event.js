@@ -1,16 +1,20 @@
-let sound_hit = new Audio('../sounds/hit.mp3');
-let sound_collision = new Audio('../sounds/collision.mp3');
+// let sound_hit = new Audio('../sounds/hit.mp3');
+// let sound_collision = new Audio('../sounds/collision.mp3');
 let gauge = 0;
 let one = 0.1;
 let id;
-let power = 0;
+// let power = 0;
 let tempX;
 let tempY;
 let TimerID;
+let remoteTimerID;
 let i = 0;
 let isfirst = true;
 let guide_x;
 let guide_y;
+let myTurn = 0;
+let remoteDx = 0;
+let remoteDy = 0;
 
 function findOffset(obj) {
     let curX = 0;
@@ -119,12 +123,43 @@ function cue_motion() {
     cue.y = tempY;
 }
 
+function remote_cue_motion() {
+    i++;
+    cue.x = cue.x + i * Math.cos(degreeToRadian * cue.degree);
+    cue.y = cue.y + i * Math.sin(degreeToRadian * cue.degree);
+
+    draw_cue();
+    if (i >= 100) {
+        clearInterval(remoteTimerID);
+        cue.x = tempX - 20 * Math.cos(degreeToRadian * cue.degree);
+        cue.y = tempY - 20 * Math.sin(degreeToRadian * cue.degree);
+        draw_cue();
+        //sound_hit.play();
+        i = 0;
+        // setTimeout(function () {
+        cue.visible = false;
+        remoteHitBall();
+        draw();
+        // }, 500);
+
+    }
+
+    cue.x = tempX;
+    cue.y = tempY;
+}
+
 function cue_execute() {
 
     tempX = cue.x;
     tempY = cue.y;
 
     TimerID = setInterval(cue_motion, 10);
+}
+
+function remote_cue_execute(dx, dy) {
+    remoteDx = dx;
+    remoteDy = dy;
+    remoteTimerID = setInterval(remote_cue_motion, 10);
 }
 
 function draw_guide_1() {
@@ -231,16 +266,7 @@ function keyEvent1(e) {
         } else if (e.keyCode === 39) { //right arrow
             cue.degree += 3;
         } else if (e.keyCode === 67) { //c
-            if (nowPlayer === 0) {
-                p2.style.color = "lightgrey";
-                p1.style.color = "dodgerblue";
-            } else {
-                p2.style.color = "dodgerblue";
-                p1.style.color = "lightgrey";
-            }
-            myScore.innerHTML = String(scoreinfo[0]);
-            enemyScore.innerHTML = String(scoreinfo[1]);
-            playerChange();
+            // playerChange();
         } else if (e.keyCode === 32 && waite) { //w
             startGauge();
             waite = false;
@@ -257,6 +283,16 @@ function keyEvent2(e) {
     }
 }
 
+function sendDone() {
+    if (stompClient) {
+        let chatMessage = {
+            sender: username,
+            type: 'DONE'
+        };
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+    }
+}
+
 function getscore() {
     let text;
     let turnover = false;
@@ -269,17 +305,20 @@ function getscore() {
             //무실점 무득점
             text = "Let's do better!";
             turnover = true;
+            sendDone();
         } else {
             text = "Oh My God !!"; //실점
             if (scoreinfo[nowPlayer] > 0)
                 scoreinfo[nowPlayer]--;
             turnover = true;
+            sendDone();
         }
     } else {
         text = "Oh My God !!"; //실점
         if (scoreinfo[nowPlayer] > 0)
             scoreinfo[nowPlayer]--;
         turnover = true;
+        sendDone();
     }   //오류나는 이유 나우공이 바뀌기전에 공이 맞은정보가 초기화 되야함
     //또한 메시지도 즉시 출력됨
 
@@ -333,4 +372,3 @@ function help_alert() {
         "info"
     );
 }
-

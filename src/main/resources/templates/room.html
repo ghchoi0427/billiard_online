@@ -100,6 +100,18 @@
         }
     }
 
+    function sendShot(dx, dy) {
+        if (stompClient) {
+            let chatMessage = {
+                sender: username,
+                type: 'SHOT',
+                dx: dx,
+                dy: dy
+            };
+            stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        }
+    }
+
     function onMessageReceived(payload) {
 
         let message = JSON.parse(payload.body);
@@ -110,9 +122,12 @@
             alert(enemyName.innerHTML + " left the game.");
         } else if (message.sender !== username && message.type === 'PRESENT') {
             enemyName.innerHTML = message.sender;
-        }
-        else if(message.sender !== username && message.type === 'SHOT'){
-           // HitBall(message.content.dx, message.content.dy);
+            myTurn = 1;
+        } else if (message.sender !== username && message.type === 'SHOT') {
+            // HitBall(message.content.dx, message.content.dy);
+            remote_cue_execute(message.dx, message.dy);
+        } else if (message.type === 'DONE' && message.sender !== username) {
+
         }
     }
 
