@@ -12,12 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
 
-    @GetMapping("/")
-    public String landing() {
-        return "redirect:/login";
-    }
-
-    @GetMapping("/login")
+    @GetMapping("")
     public String login(Model model) {
         model.addAttribute("loginDto", new LoginDto());
         return "login";
