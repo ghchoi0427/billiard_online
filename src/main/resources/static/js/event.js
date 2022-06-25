@@ -148,6 +148,12 @@ function remote_cue_motion() {
     cue.y = tempY;
 }
 
+function switchName() {
+    var temp = enemyName.innerHTML
+    enemyName.innerHTML = myName.innerHTML;
+    myName.innerHTML = temp;
+}
+
 function cue_execute() {
 
     tempX = cue.x;
@@ -231,19 +237,17 @@ function draw_guide_1() {
 }
 
 function playerChange() {
-    p1 = document.getElementById("p1");
-    p2 = document.getElementById("p2");
     myScore = document.getElementById("myScore");
     enemyScore = document.getElementById("enemyScore");
     nowPlayer++;
     nowPlayer = nowPlayer % 2;
 
     if (nowPlayer === 0) {
-        p2.style.color = "lightgrey";
-        p1.style.color = "dodgerblue";
+        enemyName.style.color = "lightgrey";
+        myName.style.color = "dodgerblue";
     } else {
-        p2.style.color = "dodgerblue";
-        p1.style.color = "lightgrey";
+        enemyName.style.color = "dodgerblue";
+        myName.style.color = "lightgrey";
     }
     myScore.innerHTML = String(scoreinfo[0]);
     enemyScore.innerHTML = String(scoreinfo[1]);
@@ -267,16 +271,17 @@ function keyEvent1(e) {
             cue.degree += 3;
         } else if (e.keyCode === 67) { //c
             // playerChange();
-        } else if (e.keyCode === 32 && waite) { //w
+        } else if (e.keyCode === 32 && waite && myTurn === nowPlayer) { //w
             startGauge();
             waite = false;
         }
+        sendCue(cue.degree);
         draw();
     }
 }
 
 function keyEvent2(e) {
-    if (e.keyCode === 32 && waite) { //w
+    if (e.keyCode === 32 && waite && myTurn === nowPlayer) { //w
         stopGauge();
         waite = false;
         waitkey = true;
@@ -292,6 +297,19 @@ function sendDone() {
         stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
     }
 }
+
+function sendCue(degree) {
+    if (stompClient) {
+        let chatMessage = {
+            sender: username,
+            cueDegree: degree,
+            type: 'CUE'
+        };
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+    }
+}
+
+
 
 function getscore() {
     let text;
@@ -331,15 +349,13 @@ function getscore() {
         cue.x = balls[nowPlayer].x + 60;
         cue.y = balls[nowPlayer].y + 60;
     }
-    p1 = document.getElementById("p1");
-    p2 = document.getElementById("p2");
 
     if (nowPlayer === 0) {
-        p2.style.color = "lightgrey";
-        p1.style.color = "dodgerblue";
+        enemyName.style.color = "lightgrey";
+        myName.style.color = "dodgerblue";
     } else {
-        p2.style.color = "dodgerblue";
-        p1.style.color = "lightgrey";
+        enemyName.style.color = "dodgerblue";
+        myName.style.color = "lightgrey";
     }
     myScore.innerHTML = String(scoreinfo[0]);
     enemyScore.innerHTML = String(scoreinfo[1]);
