@@ -131,6 +131,9 @@
             remote_cue_execute(message.dx, message.dy);
         } else if (message.type === 'DONE' && message.sender !== username) {
 
+        }else if (message.type === 'CUE' && message.sender !== username) {
+            cue.degree = message.cueDegree;
+            draw();
         }
     }
 
@@ -883,6 +886,7 @@
                 startGauge();
                 waite = false;
             }
+            sendCue(cue.degree);
             draw();
         }
     }
@@ -904,6 +908,19 @@
             stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
         }
     }
+
+    function sendCue(degree) {
+        if (stompClient) {
+            let chatMessage = {
+                sender: username,
+                cueDegree: degree,
+                type: 'CUE'
+            };
+            stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        }
+    }
+
+
 
     function getscore() {
         let text;

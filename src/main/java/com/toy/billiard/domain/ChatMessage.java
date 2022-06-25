@@ -6,7 +6,8 @@ public class ChatMessage {
     private String sender;
     private float dx;
     private float dy;
-
+    private int roomId;
+    private int cueDegree;
 
     public enum MessageType {
         CHAT,
@@ -14,7 +15,24 @@ public class ChatMessage {
         LEAVE,
         PRESENT,
         DONE,
-        SHOT
+        SHOT,
+        CUE
+    }
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
+
+    public int getCueDegree() {
+        return cueDegree;
+    }
+
+    public void setCueDegree(int cueDegree) {
+        this.cueDegree = cueDegree;
     }
 
     public float getDx() {
