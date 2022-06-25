@@ -879,7 +879,7 @@
                 cue.degree += 3;
             } else if (e.keyCode === 67) { //c
                 // playerChange();
-            } else if (e.keyCode === 32 && waite) { //w
+            } else if (e.keyCode === 32 && waite && myTurn === nowPlayer) { //w
                 startGauge();
                 waite = false;
             }
@@ -888,7 +888,7 @@
     }
 
     function keyEvent2(e) {
-        if (e.keyCode === 32 && waite) { //w
+        if (e.keyCode === 32 && waite && myTurn === nowPlayer) { //w
             stopGauge();
             waite = false;
             waitkey = true;
